@@ -1,0 +1,14 @@
+<form action="/todos/{{ todo.id }}?_method=DELETE" method="POST" style="display: inline;">
+  <div class="input-group">
+    <div class="input-group-text">
+      <input class="form-check-input mt-0" type="checkbox" name="isDone" aria-label="Checkbox for following text input"
+        {{#if todo.isDone}} checked {{/if}} disabled>
+    </div>
+
+    <input class="form-control" type="text" aria-label="Text input with checkbox" placeholder="name" name="name"
+      value="{{ todo.name }}" disabled>
+
+    <a class="btn btn-success" href="/todos/{{ todo.id }}/edit">edit</a>
+    <button class="btn btn-danger" type="submit" onclick="return confirm(`確定要刪除${this.name}?`)">delete</button>
+  </div>
+</form>
