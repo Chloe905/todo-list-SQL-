@@ -1,7 +1,10 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
+const session = require('express-session')
 const methodOverride = require('method-override')
 const bcrypt = require('bcryptjs')
+const passport = require('passport')
+const usePassport = require('./config/passport')
 const app = express()
 const PORT = 3000
 
@@ -11,9 +14,16 @@ const Todo = db.Todo
 
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
+app.use(session({
+  secret: 'ThisIsMySecret',
+  resave: false,
+  saveUninitialized: true
+}))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
+// 必須要在路由前
+usePassport(app)
 app.get('/', (req, res) => {
   return Todo.findAll({
     raw: true,
@@ -38,9 +48,10 @@ app.get('/users/login', (req, res) => {
   res.render('login')
 })
 
-app.post('/users/login', (req, res) => {
-  res.send('login')
-})
+app.post('/users/login', passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/users/login'
+}))
 
 app.get('/users/register', (req, res) => {
   res.render('register')
