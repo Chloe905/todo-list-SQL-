@@ -7,7 +7,16 @@ const db = require('../../models')
 const Todo = db.Todo
 
 // 定義/todos路由
-
+router.get('/new', (req, res) => {
+  res.render('new')
+})
+router.post('/', (req, res) => {
+  const userId = req.user.id
+  const { name } = req.body
+  return Todo.create({ name, userId })
+    .then(() => res.redirect('/'))
+    .catch((error) => { console.log(error) })
+})
 router.get('/:id', (req, res) => {
   const UserId = req.user.id
   const { id } = req.params
