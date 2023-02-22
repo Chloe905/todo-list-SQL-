@@ -20,6 +20,14 @@ app.use(methodOverride('_method'))
 
 // 必須要在路由前
 usePassport(app)
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.user = req.user
+  // res.locals.success_msg = req.flash('success_msg')
+  // res.locals.warning_msg = req.flash('warning_msg')
+  // res.locals.error = req.flash('error')
+  next()
+})
 app.use(routes)
 app.listen(PORT, () => {
   console.log(`App is running on http://localhost:${PORT}`)
