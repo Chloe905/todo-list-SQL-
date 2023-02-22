@@ -11,9 +11,9 @@ router.get('/new', (req, res) => {
   res.render('new')
 })
 router.post('/', (req, res) => {
-  const userId = req.user.id
+  const UserId = req.user.id
   const { name } = req.body
-  return Todo.create({ name, userId })
+  return Todo.create({ name, UserId })
     .then(() => res.redirect('/'))
     .catch((error) => { console.log(error) })
 })
@@ -46,6 +46,14 @@ router.put('/:id', (req, res) => {
       return todo.save()
     })
     .then(() => res.redirect(`/todos/${id}`))
+    .catch(error => console.log(error))
+})
+router.delete('/:id', (req, res) => {
+  const userId = req.user.id
+  const { id } = req.params
+  return Todo.findOne({ where: { id, userId } })
+    .then(todo => todo.destroy())
+    .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
 
