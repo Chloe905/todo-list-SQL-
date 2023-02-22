@@ -27,7 +27,27 @@ router.get('/:id', (req, res) => {
     .catch(error => console.log(error))
 })
 
+router.get('/:id/edit', (req, res) => {
+  const userId = req.user.id
+  const { id } = req.params
+  return Todo.findOne({ where: { id, userId } })
+    .then(todo => res.render('edit', { todo: todo.toJSON() }))
+    .catch(error => console.log(error))
+})
 
+router.put('/:id', (req, res) => {
+  const userId = req.user.id
+  const { id } = req.params
+  const { name, isDone } = req.body
+  return Todo.findOne({ where: { id, userId } })
+    .then(todo => {
+      todo.name = name
+      todo.isDone = isDone === 'on' // isDone === 'on'的時候回傳true，跟 if(isDone === 'on') { return todo.isDone = true}
+      return todo.save()
+    })
+    .then(() => res.redirect(`/todos/${id}`))
+    .catch(error => console.log(error))
+})
 
 // 匯出路由模組
 module.exports = router

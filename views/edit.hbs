@@ -1,0 +1,18 @@
+<div class="my-3 text-center">
+  <a href="/" class="btn btn-outline-dark rounded-circle"><i class="fa-solid fa-arrow-rotate-left"></i></a>
+</div>
+
+
+
+<form action="/todos/{{ todo.id }}?_method=PUT" method="POST" style="display: inline;">
+  <div class="input-group">
+    <div class="input-group-text">
+      <input class="form-check-input mt-0" type="checkbox" name="isDone" aria-label="Checkbox for following text input"
+        {{#if todo.isDone}} checked {{/if}}>
+    </div>
+
+    <input class="form-control" type="text" aria-label="Text input with checkbox" placeholder="name" name="name"
+      value="{{ todo.name }}">
+    <button class="btn btn-outline-secondary" type="submit"><i class="fa-regular fa-circle-check"></i></button>
+  </div>
+</form>
